@@ -190,7 +190,18 @@ def test_model_inference_accuracy_and_speed():
     data = pd.read_csv(data_path)
 
     # 前処理（モデルが期待する特徴量すべてを使う）
-    data = data.dropna(subset=["Pclass", "Sex", "Age", "Fare", "Survived", "Embarked", "SibSp", "Parch"])
+    data = data.dropna(
+        subset=[
+            "Pclass",
+            "Sex",
+            "Age",
+            "Fare",
+            "Survived",
+            "Embarked",
+            "SibSp",
+            "Parch",
+        ]
+    )
     data["Sex"] = data["Sex"].map({"male": 0, "female": 1})
     data["Embarked"] = data["Embarked"].map({"C": 0, "Q": 1, "S": 2})
 
@@ -204,6 +215,5 @@ def test_model_inference_accuracy_and_speed():
     elapsed = time.time() - start
     acc = accuracy_score(y, preds)
 
-#    assert acc >= 0.75, f"Accuracy too low: {acc:.4f}"
+    #    assert acc >= 0.75, f"Accuracy too low: {acc:.4f}"
     assert elapsed < 1.0, f"Inference too slow: {elapsed:.4f}秒"
-
