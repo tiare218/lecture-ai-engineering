@@ -182,13 +182,10 @@ import os
 
 def test_model_inference_accuracy_and_speed():
     # モデルとデータのパス
-#  model_path = os.path.join("models", "titanic_model.pkl")
-#    data_path = os.path.join("data", "Titanic.csv")
-model_path = os.path.join("day5", "演習3", "models", "titanic_model.pkl")
-data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
-
-
-
+    #  model_path = os.path.join("models", "titanic_model.pkl")
+    #    data_path = os.path.join("data", "Titanic.csv")
+    model_path = os.path.join("day5", "演習3", "models", "titanic_model.pkl")
+    data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
 
     # モデルとデータの読み込み
     model = joblib.load(model_path)
@@ -214,11 +211,14 @@ data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
 
     print(f"Accuracy: {accuracy:.4f}")
     print(f"Inference time: {inference_time:.4f} seconds")
+
+
 import os
 import joblib
 import pandas as pd
 import time
 from sklearn.metrics import accuracy_score
+
 
 def test_model_inference_accuracy_and_speed():
     # ✅ GitHub Actions でも通るように相対パスにする
@@ -244,4 +244,3 @@ def test_model_inference_accuracy_and_speed():
     # ✅ 精度と推論時間のしきい値チェック
     assert acc > 0.75, f"Accuracy too low: {acc}"
     assert duration < 1.0, f"Inference too slow: {duration:.4f}秒"
-
