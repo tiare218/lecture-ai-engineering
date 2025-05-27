@@ -20,7 +20,7 @@ MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 
 @pytest.fixture
 def sample_data():
-　    """テスト用データセットを読み込む"""
+    """テスト用データセットを読み込む"""
     if not os.path.exists(DATA_PATH):
         from sklearn.datasets import fetch_openml
 
