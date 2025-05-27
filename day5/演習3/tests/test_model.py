@@ -171,11 +171,14 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
 import time
 import joblib
 import pandas as pd
 from sklearn.metrics import accuracy_score
 import os
+
 
 def test_model_inference_accuracy_and_speed():
     # モデルとデータのパス
@@ -200,8 +203,9 @@ def test_model_inference_accuracy_and_speed():
 
     # テストの検証（閾値を自由に調整）
     assert accuracy >= 0.75, f"Accuracy too low: {accuracy:.4f}"
-    assert inference_time <= 1.0, f"Inference took too long: {inference_time:.4f} seconds"
+    assert (
+        inference_time <= 1.0
+    ), f"Inference took too long: {inference_time:.4f} seconds"
 
     print(f"Accuracy: {accuracy:.4f}")
     print(f"Inference time: {inference_time:.4f} seconds")
-
