@@ -171,3 +171,37 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+import time
+import joblib
+import pandas as pd
+from sklearn.metrics import accuracy_score
+import os
+
+def test_model_inference_accuracy_and_speed():
+    # モデルとデータのパス
+    model_path = os.path.join("models", "titanic_model.pkl")
+    data_path = os.path.join("data", "Titanic.csv")
+
+    # モデルとデータの読み込み
+    model = joblib.load(model_path)
+    df = pd.read_csv(data_path)
+
+    # 特徴量と正解ラベルの抽出（必要に応じてカラム名を調整）
+    X = df.drop(columns=["Survived"])
+    y_true = df["Survived"]
+
+    # 推論と推論時間の計測
+    start_time = time.time()
+    y_pred = model.predict(X)
+    inference_time = time.time() - start_time
+
+    # 精度の算出
+    accuracy = accuracy_score(y_true, y_pred)
+
+    # テストの検証（閾値を自由に調整）
+    assert accuracy >= 0.75, f"Accuracy too low: {accuracy:.4f}"
+    assert inference_time <= 1.0, f"Inference took too long: {inference_time:.4f} seconds"
+
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Inference time: {inference_time:.4f} seconds")
+
