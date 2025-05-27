@@ -209,3 +209,34 @@ def test_model_inference_accuracy_and_speed():
 
     print(f"Accuracy: {accuracy:.4f}")
     print(f"Inference time: {inference_time:.4f} seconds")
+import os
+import joblib
+import pandas as pd
+import time
+from sklearn.metrics import accuracy_score
+
+def test_model_inference_accuracy_and_speed():
+    # ✅ GitHub Actions でも通るように相対パスにする
+    model_path = os.path.join("day5", "演習3", "models", "titanic_model.pkl")
+    data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
+
+    # モデルとデータの読み込み
+    model = joblib.load(model_path)
+    data = pd.read_csv(data_path)
+
+    # 前処理（簡易）
+    data = data.dropna(subset=["Pclass", "Sex", "Age", "Fare", "Survived"])
+    data["Sex"] = data["Sex"].map({"male": 0, "female": 1})
+    X = data[["Pclass", "Sex", "Age", "Fare"]]
+    y = data["Survived"]
+
+    # 推論と精度
+    start = time.time()
+    preds = model.predict(X)
+    duration = time.time() - start
+    acc = accuracy_score(y, preds)
+
+    # ✅ 精度と推論時間のしきい値チェック
+    assert acc > 0.75, f"Accuracy too low: {acc}"
+    assert duration < 1.0, f"Inference too slow: {duration:.4f}秒"
+
