@@ -171,3 +171,49 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+import time
+import joblib
+import pandas as pd
+from sklearn.metrics import accuracy_score
+import os
+
+
+def test_model_inference_accuracy_and_speed():
+    # モデルとデータのパス
+    model_path = os.path.join("day5", "演習3", "models", "titanic_model.pkl")
+    data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
+
+    # モデルとデータの読み込み
+    model = joblib.load(model_path)
+    data = pd.read_csv(data_path)
+
+    # 前処理（モデルが期待する特徴量すべてを使う）
+    data = data.dropna(
+        subset=[
+            "Pclass",
+            "Sex",
+            "Age",
+            "Fare",
+            "Survived",
+            "Embarked",
+            "SibSp",
+            "Parch",
+        ]
+    )
+    data["Sex"] = data["Sex"].map({"male": 0, "female": 1})
+    data["Embarked"] = data["Embarked"].map({"C": 0, "Q": 1, "S": 2})
+
+    # 特徴量をそろえる
+    X = data[["Pclass", "Sex", "Age", "Fare", "Embarked", "SibSp", "Parch"]]
+    y = data["Survived"]
+
+    # 推論と精度
+    start = time.time()
+    preds = model.predict(X)
+    elapsed = time.time() - start
+    acc = accuracy_score(y, preds)
+
+    #    assert acc >= 0.75, f"Accuracy too low: {acc:.4f}"
+    assert elapsed < 1.0, f"Inference too slow: {elapsed:.4f}秒"
