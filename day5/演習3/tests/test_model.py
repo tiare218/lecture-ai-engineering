@@ -182,7 +182,7 @@ import os
 
 def test_model_inference_accuracy_and_speed():
     # モデルとデータのパス
-#    model_path = os.path.join("models", "titanic_model.pkl")
+#  model_path = os.path.join("models", "titanic_model.pkl")
 #    data_path = os.path.join("data", "Titanic.csv")
 model_path = os.path.join("day5", "演習3", "models", "titanic_model.pkl")
 data_path = os.path.join("day5", "演習3", "data", "Titanic.csv")
